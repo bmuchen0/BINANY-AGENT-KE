@@ -1,0 +1,198 @@
+ 
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Withdraw - Binany Agent Kenya</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, red, orange, yellow, green, blue, indigo, violet);
+      color: white;
+      padding: 20px;
+    }
+    form {
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+      transition: opacity 0.3s ease;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+    }
+    button {
+      background-color: #004aad;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      position: relative;
+    }
+    button.loading {
+      background-color: #222;
+      pointer-events: none;
+    }
+    button.loading::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      width: 16px;
+      height: 16px;
+      border: 3px solid #fff;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      transform: translateY(-50%);
+    }
+    @keyframes spin {
+      to { transform: translateY(-50%) rotate(360deg); }
+    }
+    .back-btn {
+      background: #444;
+      margin-top: 10px;
+    }
+    .fee-box {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .message-box {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+      font-weight: bold;
+      color: red;
+      margin-top: 15px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Withdraw Funds</h1>
+
+  <form id="withdrawForm">
+    <input type="text" id="fullName" name="fullName" placeholder="Your Full Name" required />
+    <input type="email" id="email" name="email" placeholder="Binany Account Email or ID" required />
+    <input type="number" id="amount" name="amount" placeholder="Amount to Withdraw (Ksh)" min="605" max="20000" required />
+    <div class="fee-box" id="feeInfo">Transaction Fee: -</div>
+    <textarea id="phone" name="phone" placeholder="M-Pesa Phone Number" required></textarea>
+    <button type="submit" id="submitBtn">Submit Withdrawal</button>
+    <button type="button" class="back-btn" onclick="window.location.href='index.html'">Back</button>
+    <div id="messageBox" class="message-box"></div>
+  </form>
+
+  <script>
+    const amountInput = document.getElementById('amount');
+    const feeInfo = document.getElementById('feeInfo');
+    const messageBox = document.getElementById('messageBox');
+    const form = document.getElementById('withdrawForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function getWithdrawalFee(amount) {
+      if (amount < 605) return null;
+      if (amount <= 3000) return 0;
+      return 50;
+    }
+
+    amountInput.addEventListener('input', () => {
+      const amount = parseInt(amountInput.value);
+      const fee = getWithdrawalFee(amount);
+      if (isNaN(amount)) {
+        feeInfo.textContent = "Transaction Fee: -";
+      } else if (amount < 605) {
+        feeInfo.textContent = "Minimum withdrawal is Ksh 605.";
+      } else if (amount > 20000) {
+        feeInfo.textContent = "Maximum withdrawal is Ksh 20,000.";
+      } else {
+        feeInfo.textContent = `Transaction Fee: Ksh ${fee}`;
+      }
+    });
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      messageBox.textContent = "";
+      form.style.opacity = 0.5;
+      submitBtn.classList.add('loading');
+
+      const amount = parseInt(amountInput.value);
+      if (amount < 605 || amount > 20000) {
+        showMessage("❌ Withdrawal must be between Ksh 605 and 20,000.");
+        resetFormVisuals();
+        return;
+      }
+
+      showMessage("❌ Withdrawal denied. This number did not deposit with us.");
+      resetFormVisuals();
+
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 7000);
+    });
+
+    function showMessage(text) {
+      messageBox.textContent = text;
+      messageBox.style.display = 'block';
+
+      setTimeout(() => {
+        messageBox.textContent = '';
+      }, 5000);
+    }
+
+    function resetFormVisuals() {
+      form.style.opacity = 1;
+      submitBtn.classList.remove('loading');
+    }
+  </script>
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>
