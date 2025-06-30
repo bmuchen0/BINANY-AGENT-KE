@@ -1,0 +1,205 @@
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deposit - Binany Agent Kenya</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      padding: 20px;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.2em;
+      margin-top: 10px;
+    }
+
+    .instructions {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px auto;
+      max-width: 500px;
+      text-align: center;
+      font-size: 1.1em;
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    input, textarea {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #ccc;
+    }
+
+    button {
+      background-color: #28a745;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .back-btn {
+      background: #555;
+      margin-top: 10px;
+    }
+
+    .fee-box {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Deposit Funds</h1>
+
+  <div class="instructions">
+    <p><strong>Send M-Pesa To:</strong></p>
+    <p>Name: <strong>Agnes Mbathi</strong></p>
+    <p>Phone Number: <strong>0757 389 687</strong></p>
+    <p>After sending money, fill out the form below to complete your deposit request.</p>
+  </div>
+
+  <form id="depositForm">
+    <input type="text" name="fullName" id="fullName" placeholder="Your Full Name" required="">
+    <input type="text" name="binanyId" id="binanyId" placeholder="Binany Account ID or Email" required="">
+    
+    <input type="number" name="amount" id="amount" placeholder="Amount to Deposit (Ksh)" required="">
+    <div class="fee-box" id="feeInfo">Transaction Fee: Ksh 0 | Total: Ksh 0</div>
+    
+    <textarea name="phone" id="phone" placeholder="Your M-Pesa Phone Number" required=""></textarea>
+    
+    <button type="submit">Submit Deposit</button>
+    <button type="button" class="back-btn" onclick="window.location.href='index.html'">Back</button>
+  </form>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbw4rC0l0_sB4zqX9z77ApJrTYZS7YcxPXyn7c3jPTTdeJFlm8FZRFkrgvx8DJyIGhCPtw/exec'; // 🔁 Replace this with your actual script URL
+    const form = document.getElementById('depositForm');
+    const amountInput = document.getElementById('amount');
+    const feeInfo = document.getElementById('feeInfo');
+
+    function calculateFee(amount) {
+      if (amount >= 10000) return 55;
+      if (amount >= 9000) return 50;
+      if (amount >= 8000) return 45;
+      if (amount >= 7000) return 40;
+      if (amount >= 6000) return 35;
+      if (amount >= 5000) return 30;
+      if (amount >= 4000) return 25;
+      if (amount >= 3000) return 20;
+      if (amount >= 2000) return 15;
+      if (amount >= 1000) return 10;
+      if (amount >= 500)  return 5;
+      return 0;
+    }
+
+    amountInput.addEventListener('input', () => {
+      const amount = parseInt(amountInput.value);
+      const fee = calculateFee(amount);
+      const total = amount + fee;
+
+      if (amount < 500) {
+        feeInfo.textContent = "Minimum deposit is Ksh 505 (Ksh 500 + fee)";
+      } else {
+        feeInfo.textContent = `Transaction Fee: Ksh ${fee} | Total: Ksh ${total}`;
+      }
+    });
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const amount = parseInt(amountInput.value);
+      if (amount < 500) {
+        alert("Minimum deposit is Ksh 505 (Ksh 500 + fee).");
+        return;
+      }
+
+      fetch(scriptURL, {
+        method: 'POST',
+        body: new FormData(form)
+      })
+      .then(response => {
+        alert("Deposit submitted successfully!");
+        form.reset();
+        feeInfo.textContent = "Transaction Fee: Ksh 0 | Total: Ksh 0";
+      })
+      .catch(error => {
+        console.error('Error!', error.message);
+        alert("Something went wrong. Please try again.");
+      });
+    });
+  </script>
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+
+
+</body></html>

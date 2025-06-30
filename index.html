@@ -1,0 +1,180 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Binany Agent Kenya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, red, yellow, blue);
+      color: white;
+      height: 100%;
+    }
+
+    #splash {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background-color: #001f4d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      overflow: hidden;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .bar {
+      width: 4px;
+      height: 80px;
+      background: linear-gradient(to bottom, red, green);
+      position: absolute;
+      top: -80px;
+      animation: fall 6s linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+      }
+    }
+
+    #main-content {
+      display: none;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .content-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .title {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #0077ff, #66ccff, gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .description {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 60px; /* Added space between nav and About */
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      background: #004aad;
+      padding: 10px 20px;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: #003379;
+    }
+
+    .about-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: black;
+      margin-bottom: 10px;
+    }
+
+    .about-box {
+      background: rgba(0, 128, 255, 0.2);
+      padding: 20px;
+      border-radius: 10px;
+      border: 2px solid lightblue;
+      font-weight: bold;
+      color: black;
+      max-width: 500px;
+      margin-bottom: 40px;
+    }
+
+    .copyright {
+      font-size: 14px;
+      color: #ffffffaa;
+      margin-top: 50px;
+    }
+
+    @media (min-width: 768px) {
+      .content-wrapper {
+        flex-direction: row;
+        justify-content: space-around;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="splash">
+    <div class="title">Binany Agent Kenya</div>
+  </div>
+
+  <div id="main-content">
+    <div class="content-wrapper">
+      <div>
+        <div class="title">Binany Agent Kenya</div>
+        <div class="description">Trusted local platform for instant deposits and withdrawals.</div>
+        <div class="nav-links">
+          <a href="deposit.html">Deposit</a>
+          <a href="withdraw.html">Withdraw</a>
+        </div>
+
+        <div class="about-title">ABOUT US</div>
+        <div class="about-box">
+          We are a licensed and fast-growing digital agent helping Binany users in Kenya transact quickly and securely.
+        </div>
+
+        <div class="copyright">
+          © 2025 Binany Agent Kenya. All rights reserved.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const splash = document.getElementById("splash");
+    for (let i = 0; i < 100; i++) {
+      const bar = document.createElement("div");
+      bar.classList.add("bar");
+      bar.style.left = Math.random() * 100 + "vw";
+      bar.style.animationDuration = (4 + Math.random() * 3) + "s";
+      splash.appendChild(bar);
+    }
+
+    setTimeout(() => {
+      splash.style.display = 'none';
+      document.getElementById('main-content').style.display = 'flex';
+    }, 5000);
+  </script>
+</body>
+</html>
