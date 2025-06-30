@@ -19,7 +19,7 @@
       position: fixed;
       width: 100%;
       height: 100%;
-      background-color: #001f4d;
+      background: linear-gradient(to bottom right, red, orange, yellow, green);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -30,17 +30,32 @@
     }
 
     .bar {
-      width: 6px;
-      height: 120px;
-      background-color: red;
+      width: 8px;
+      height: 150px;
       position: absolute;
-      top: -120px;
+      top: -150px;
       animation: fall 6s linear infinite;
-      opacity: 0.8;
+      opacity: 0.85;
     }
 
-    .green-bar {
+    .bar.green {
       background-color: green;
+    }
+
+    .bar.red {
+      background-color: red;
+    }
+
+    .bar .footer-logo {
+      width: 16px;
+      height: 16px;
+      position: absolute;
+      bottom: -20px;
+      left: -4px;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Binary.com_logo.svg/2560px-Binary.com_logo.svg.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
     }
 
     @keyframes fall {
@@ -83,36 +98,11 @@
       margin-bottom: 20px;
     }
 
-    form {
-      margin-top: 20px;
-    }
-
-    input {
-      padding: 15px;
-      font-size: 16px;
-      width: 250px;
-      border-radius: 8px;
-      border: none;
-      margin-bottom: 10px;
-    }
-
-    button {
-      padding: 15px 30px;
-      background-color: white;
-      color: black;
-      font-weight: bold;
-      font-size: 16px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-    }
-
     .nav-links {
       display: flex;
       gap: 15px;
       flex-wrap: wrap;
       justify-content: center;
-      margin-top: 20px;
       margin-bottom: 60px;
     }
 
@@ -173,14 +163,6 @@
       <div>
         <div class="title">Binany Agent Kenya</div>
         <div class="description">Trusted local platform for instant deposits and withdrawals.</div>
-
-        <!-- ✅ Login Form -->
-        <form onsubmit="return validateLogin()">
-          <input id="phone" type="tel" maxlength="10" minlength="10" pattern="[0-9]{10}" placeholder="PHONE NUMBER" required /><br>
-          <input id="password" type="password" placeholder="PASSWORD" required /><br>
-          <button type="submit">LOG IN</button>
-        </form>
-
         <div class="nav-links">
           <a href="deposit.html">Deposit</a>
           <a href="withdraw.html">Withdraw</a>
@@ -200,14 +182,16 @@
 
   <script>
     const splash = document.getElementById("splash");
-
     for (let i = 0; i < 100; i++) {
       const bar = document.createElement("div");
-      bar.classList.add("bar");
+      const isGreen = Math.random() > 0.5;
+      bar.classList.add("bar", isGreen ? "green" : "red");
 
-      // Randomly choose red or green
-      if (Math.random() > 0.5) {
-        bar.classList.add("green-bar");
+      // 25% of bars will have the Binary logo at the bottom
+      if (Math.random() < 0.25) {
+        const logo = document.createElement("div");
+        logo.classList.add("footer-logo");
+        bar.appendChild(logo);
       }
 
       bar.style.left = Math.random() * 100 + "vw";
@@ -219,16 +203,6 @@
       splash.style.display = 'none';
       document.getElementById('main-content').style.display = 'flex';
     }, 5000);
-
-    function validateLogin() {
-      const phone = document.getElementById("phone").value;
-      if (!/^\d{10}$/.test(phone)) {
-        alert("Please enter a valid 10-digit phone number.");
-        return false;
-      }
-      alert("Login successful (demo only)");
-      return false;
-    }
   </script>
 </body>
 </html>
